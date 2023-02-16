@@ -53,67 +53,90 @@ const App = () => {
   }, []);
 
   return (
-    <div className="grid place-items-center ">
+    <div className="content-center px-96 py-16">
       {loading ? (
         <Loading />
       ) : (
-        <div className="mt-16">
-          <select
-            className="font-bold text-right text-xl border-2 border-red-500 rounded-md"
-            onChange={(e) => setTodosPerPage(e.target.value)}
-          >
-            <option value="10">10</option>
-            <option value="20">20</option>
-            <option value="30">30</option>
-          </select>
-          <div className="mt-5">
-            {visibleTodos.map((todo, index) => (
-              <p className="text-xl" key={index}>
-                {getIndexNumber(index)} {todo.title}
-              </p>
-            ))}
+        <>
+          <div className=" relative rounded-lg  sm:rounded-lg">
+           No. of Page : <select
+              className="font-bold place-items-right mb-3 text-xl border-2 border-red-500 rounded-md"
+              onChange={(e) => setTodosPerPage(e.target.value)}
+            >
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="30">30</option>
+            </select>
+            <table className="w-full rounded-lg mb-8 text-sm text-left text-gray-500 dark:text-gray-400">
+              <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                  <th scope="col" className="px-6 py-3">
+                    S.N
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Data
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {visibleTodos.map((todo, index) => (
+                  <tr
+                    key={index}
+                    className="bg-white border-b dark:bg-gray-900 dark:border-gray-700"
+                  >
+                    <td className="px-2 py-2">{getIndexNumber(index)}</td>
+                    <th
+                      scope="row"
+                      className="px-0 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                    >
+                      {todo.title}
+                    </th>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
           {visibleTodos.length > 0 ? (
-            <div className="flex mt-8 mb-10 gap-6 ">
-              <span
-                className={` text-xl ${
-                  currentPage === 1
-                    ? "text-gray-300 cursor-not-allowed"
-                    : "font-bold cursor-pointer"
-                }`}
-                onClick={prevPageHandler}
-              >
-                prev
-              </span>
-              <p className="text-xl">
+            <nav aria-label="Page w-full mt-24   navigation example">
+              <ul className="inline-flex ">
+                <li>
+                  <a
+                    onClick={prevPageHandler}
+                    className="px-3 cursor-pointer py-2 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                  >
+                    Previous
+                  </a>
+                </li>
                 {pages.map((page, idx) => (
-                  <span
-                    onClick={() => setCurrentPage(page)}
-                    className={`cursor-pointer gap-6 ${
-                      currentPage === page ? "font-bold text-red-500" : ""
-                    }`}
-                    key={idx}
-                  >{`${page}   `}</span>
+                  <li key={idx}>
+                    <a
+                      onClick={() => setCurrentPage(page)}
+                      aria-current="page"
+                      className={`px-3 cursor-pointer py-2 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 ${
+                        currentPage === page ? "" : "dark:text-white"
+                      }`}
+                    >
+                      {`${page}`}
+                    </a>
+                  </li>
                 ))}
-              </p>
-              <span
-                className={`text-xl ${
-                  currentPage === numOfTotalPages
-                    ? "text-gray-300 cursor-not-allowed"
-                    : "cursor-pointer font-bold"
-                }`}
-                onClick={nextPageHandler}
-              >
-                next
-              </span>
-            </div>
+                <li>
+                  <a
+                    onClick={nextPageHandler}
+                    className="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 cursor-pointer dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                  >
+                    Next
+                  </a>
+                </li>
+              </ul>
+            </nav>
           ) : (
             <div className="font-bold text-5xl text-red-500 mt-48">
               {" "}
               Error Retrieving data{" "}
             </div>
           )}
-        </div>
+        </>
       )}
     </div>
   );
